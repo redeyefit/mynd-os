@@ -1,0 +1,10 @@
+
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/deployFlame.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/deployFlame", "dest": "api/deployFlame.js" }
+  ]
+}
