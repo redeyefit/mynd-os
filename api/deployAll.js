@@ -1,3 +1,13 @@
+const { Client } = require('@notionhq/client');
+
+const notion = new Client({ auth: process.env.NOTION_TOKEN });
+
+
+
+
+
+
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
