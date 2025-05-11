@@ -11,27 +11,27 @@ module.exports = async (req, res) => {
   const parentPageId = process.env.CUBE_PAGE_ID;
 
   try {
-    for (const block of cubeBlocks) {
-      try {
-        await notion.blocks.children.append({
-          block_id: parentPageId,
-          children: [block]
-        });
-      } catch (blockError) {
-        console.error('🔥 Failed block:', JSON.stringify(block, null, 2));
-        throw new Error(`Block failed: ${blockError.message}`);
-      }
-    }
+    const previewBlock = cubeBlocks[0];
+
+    // DEBUG: Echo the first block to verify structure
+    console.log('🧪 First Block:', JSON.stringify(previewBlock, null, 2));
+
+    const response = await notion.blocks.children.append({
+      block_id: parentPageId,
+      children: [previewBlock] // test only one block
+    });
 
     res.status(200).json({
       success: true,
-      message: '🧊 THE CUBE deployed successfully to Notion.'
+      message: '✅ First Cube block deployed successfully.',
+      block: previewBlock
     });
   } catch (err) {
-    console.error('💥 Deployment error:', err.message);
+    console.error('💥 DeployCube Error:', err.message);
     res.status(500).json({
-      error: 'Deploy failed on block',
-      detail: err.message
+      error: 'Failed to deploy blocks',
+      detail: err.message,
+      failedBlock: cubeBlocks[0]
     });
   }
 };
