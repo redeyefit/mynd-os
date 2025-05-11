@@ -1,5 +1,6 @@
 const { Client } = require('@notionhq/client');
 const { cubeBlocks } = require('../lib/cubeData');
+const { wipeNotionPageChildren } = require('./wipeCube');
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -11,6 +12,10 @@ module.exports = async (req, res) => {
   const parentPageId = process.env.CUBE_PAGE_ID;
 
   try {
+    // Step 1: Wipe existing children using shared logic
+    await wipeNotionPageChildren(parentPageId);
+
+    // Step 2: Append clean new Cube blocks
     for (const block of cubeBlocks) {
       await notion.blocks.children.append({
         block_id: parentPageId,
@@ -20,12 +25,12 @@ module.exports = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: '🧊 THE CUBE deployed successfully to Notion.'
+      message: '🧊 THE CUBE deployed dynamically with wipe-first logic.'
     });
   } catch (err) {
-    console.error('💥 DeployCube Error:', err.message);
+    console.error('💥 DeployCube error:', err);
     res.status(500).json({
-      error: 'Failed to deploy blocks',
+      error: 'Deploy failed',
       detail: err.message
     });
   }
