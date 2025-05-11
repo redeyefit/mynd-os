@@ -12,10 +12,15 @@ module.exports = async (req, res) => {
 
   try {
     for (const block of cubeBlocks) {
-      await notion.blocks.children.append({
-        block_id: parentPageId,
-        children: [block]
-      });
+      try {
+        await notion.blocks.children.append({
+          block_id: parentPageId,
+          children: [block]
+        });
+      } catch (blockError) {
+        console.error('🔥 Failed block:', JSON.stringify(block, null, 2));
+        throw new Error(`Block failed: ${blockError.message}`);
+      }
     }
 
     res.status(200).json({
@@ -25,9 +30,8 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error('💥 Deployment error:', err.message);
     res.status(500).json({
-      error: 'Deploy failed',
+      error: 'Deploy failed on block',
       detail: err.message
     });
   }
 };
-0
