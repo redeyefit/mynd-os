@@ -14,15 +14,28 @@ module.exports = async (req, res) => {
 
   try {
     for (const block of allBlocks) {
-      await notion.blocks.children.append({
-        block_id: parentPageId,
-        children: [block],
-      });
+      try {
+        await notion.blocks.children.append({
+          block_id: parentPageId,
+          children: [block],
+        });
+      } catch (err) {
+        console.error('❌ Block failed:', JSON.stringify(block, null, 2));
+        console.error('💥 Error:', err.message);
+        return res.status(500).json({
+          error: 'Deploy failed on block',
+          failedBlock: block,
+          detail: err.message,
+        });
+      }
     }
 
-    res.status(200).json({ success: true, message: '🔥 Flame + Vault deployed to Notion.' });
+    res.status(200).json({
+      success: true,
+      message: '🔥 Flame + Vault deployed to Notion.',
+    });
   } catch (err) {
-    console.error('💥 Block Error:', err.message);
-    res.status(500).json({ error: 'Deploy failed', detail: err.message });
+    console.error('🔥 Global deploy error:', err.message);
+    res.status(500).json({ error: 'Unexpected error during deploy', detail: err.message });
   }
 };
