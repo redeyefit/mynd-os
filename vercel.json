@@ -4,8 +4,8 @@
     { "src": "api/deployFlame.js", "use": "@vercel/node" },
     { "src": "api/deployVault.js", "use": "@vercel/node" },
     { "src": "api/deployAll.js", "use": "@vercel/node" },
-    { "src": "api/wipeCube.js", "use": "@vercel/node" }
-
+    { "src": "api/wipeCube.js", "use": "@vercel/node" },
+{ "src": "/api/deployCube", "dest": "api/deployCube.js" }
   ],
   "routes": [
     { "src": "/api/deployFlame", "dest": "api/deployFlame.js" },
