@@ -1,15 +1,19 @@
 {
   "version": 2,
   "builds": [
+    { "src": "api/deploySection.js", "use": "@vercel/node" },
     { "src": "api/deployFlame.js", "use": "@vercel/node" },
     { "src": "api/deployVault.js", "use": "@vercel/node" },
     { "src": "api/deployAll.js", "use": "@vercel/node" },
-    { "src": "api/deployCube.js", "use": "@vercel/node" }
+    { "src": "api/deployCube.js", "use": "@vercel/node" },
+    { "src": "api/wipeCube.js", "use": "@vercel/node" }
   ],
   "routes": [
+    { "src": "/api/deploySection", "dest": "api/deploySection.js" },
     { "src": "/api/deployFlame", "dest": "api/deployFlame.js" },
     { "src": "/api/deployVault", "dest": "api/deployVault.js" },
     { "src": "/api/deployAll", "dest": "api/deployAll.js" },
-    { "src": "/api/deployCube", "dest": "api/deployCube.js" }
+    { "src": "/api/deployCube", "dest": "api/deployCube.js" },
+    { "src": "/api/wipeCube", "dest": "api/wipeCube.js" }
   ]
 }
